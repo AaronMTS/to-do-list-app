@@ -1,0 +1,166 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+
+:root {
+    --body-padding: 30px;
+    --padding-1: 10px;
+    --padding-2: 18px;
+    --font-size-1: 15px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: "DM Sans", sans-serif;
+}
+
+.fixed-max-width {
+    max-width: 1440px;
+}
+
+.sticky {
+    position: sticky;
+}
+
+.clickable:active {
+    transform: translateY(2px);
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    background-color: #f5f5f5;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(60px + var(--padding-2));
+    width: 100%;
+    background-color: #2196f3;
+    padding: var(--padding-2) 0;
+}
+
+main {
+    width: 100%;
+    padding: 0 var(--body-padding);
+}
+
+.top-navbar {
+    display: grid;
+    width: 100%;
+    padding: 0 var(--body-padding);
+}
+
+#form-search {
+    display: flex;
+    background-color: #42a5f5;
+    height: 40px;
+    width: clamp(400px, 30vw, calc(1440px * 0.5));
+    position: absolute;
+    top: var(--padding-2);
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+
+#form-search > * {
+    background-color: transparent;
+    border: unset;
+}
+
+#form-search > input {
+    flex-grow: 1;
+    padding: 0 10px;
+}
+
+#form-search > input::placeholder {
+    font-size: var(--font-size-1);
+    color: #c0e1fa;
+}
+
+#btn-search {
+    display: grid;
+    place-items: center;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+#btn-search > svg {
+    height: calc(var(--font-size-1) + 1px);
+    width: calc(var(--font-size-1) + 1px);
+}
+
+#btn-add-entry {
+    display: flex;
+    justify-self: flex-end;
+    gap: 3px;
+    align-items: center;
+    height: 40px;
+    padding: 8px;
+    background-color: #49a8e8;
+    font-size: var(--font-size-1);
+    color: #fffffe;
+    border: unset;
+    border-radius: 10%;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    cursor: pointer;
+}
+
+#btn-add-entry > span {
+    margin-right: 3px;
+}
+
+#btn-add-entry > svg {
+    height: 20px;
+    width: 20px;
+}
+
+#form-week {
+    width: 100%;
+    margin: 18px 0;
+}
+
+#form-week * {
+    font-size: var(--font-size-1);
+}
+
+table {
+    width: 100%;
+    padding: 0;
+    border-collapse: separate;
+    border-spacing: 8px;
+    table-layout: fixed;
+}
+
+thead {
+    display: table-header-group;
+}
+
+thead tr {
+    display: table-row;
+}
+
+thead tr th, table tr td{
+    display: table-cell;
+    text-align: left;
+    padding: 6px 3px;
+}
+
+tbody {
+    width: 100%;
+}
+
+tbody tr td {
+    border-top: 4px solid #d7dfe1;
+    text-wrap: wrap;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>To-do List</title>
+</head>
+<body>
+    <header class="sticky">
+        <nav class="top-navbar fixed-max-width">
+            <form action="" method="get" id="form-search">
+                <input type="search" name="search" id="search" placeholder="Search">
+                <button type="submit" id="btn-search"><svg fill="#c0e1fa" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12.027 9.92L16 13.95 14 16l-4.075-3.976A6.465 6.465 0 0 1 6.5 13C2.91 13 0 10.083 0 6.5 0 2.91 2.917 0 6.5 0 10.09 0 13 2.917 13 6.5a6.463 6.463 0 0 1-.973 3.42zM1.997 6.452c0 2.48 2.014 4.5 4.5 4.5 2.48 0 4.5-2.015 4.5-4.5 0-2.48-2.015-4.5-4.5-4.5-2.48 0-4.5 2.014-4.5 4.5z" fill-rule="evenodd"/>
+                </svg></button>
+            </form>
+            <button type="button" id="btn-add-entry" class="clickable"><svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="Complete"><g data-name="add" id="add-2"><g><line fill="none" stroke="#fffffe" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="19" y2="5"/><line fill="none" stroke="#fffffe" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="5" x2="19" y1="12" y2="12"/></g></g></g></svg><span>Add Entry</span></button>
+        </nav>
+    </header>
+    <main class="fixed-max-width">
+        <form action="" method="get" id="form-week">
+            <input type="week" name="week-selector" id="week-selector">
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>SUN</th>
+                    <th>MON</th>
+                    <th>TUE</th>
+                    <th>WED</th>
+                    <th>THU</th>
+                    <th>FRI</th>
+                    <th>SAT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr id="tb-first-row">
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+    <div id="add-modal" class="modal">
+        <form action="" method="post">
+            <textarea name="" id=""></textarea>
+            <input type="date" name="" id="">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <footer><p>by AaronMTS</p></footer>
+</body>
+</html>
