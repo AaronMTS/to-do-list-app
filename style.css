@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
 
 :root {
+  height: 100%;
   --body-padding: 30px;
   --padding-1: 10px;
   --padding-2: 18px;
@@ -41,7 +42,8 @@ h2,
 h3,
 h4,
 h5,
-h6 {
+h6,
+p {
   margin: 0;
 }
 
@@ -66,6 +68,9 @@ header {
 }
 
 main {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
   width: 100%;
   padding: 0 var(--body-padding);
 }
@@ -140,19 +145,33 @@ main {
 }
 
 #form-week {
+  display: flex;
   width: 100%;
   margin: 18px 0;
+  align-items: center;
+  gap: 10px;
+}
+
+#week-selector::-webkit-datetime-edit-text {
+  display: none;
 }
 
 #form-week * {
   font-size: var(--font-size-1);
 }
 
+#table-container {
+  flex: 1 1 auto;
+  overflow-x: auto;
+}
+
 table {
+  height: 100%;
   width: 100%;
+  min-width: 960px;
   padding: 0;
   border-collapse: separate;
-  border-spacing: 8px;
+  border-spacing: 12px;
   table-layout: fixed;
 }
 
@@ -164,11 +183,15 @@ thead tr {
   display: table-row;
 }
 
+thead tr th {
+  font-size: calc(var(--font-size-1) + 4px);
+}
+
 thead tr th,
 table tr td {
   display: table-cell;
   text-align: left;
-  padding: 6px 3px;
+  padding: 6px 0;
 }
 
 tbody {
@@ -178,6 +201,28 @@ tbody {
 tbody tr td {
   border-top: 4px solid #d7dfe1;
   text-wrap: wrap;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+.p-day {
+  font-size: calc(var(--font-size-1) + 2px);
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.div-to-do-entry {
+  font-size: var(--font-size-1);
+  background-color: #c0e1fa;
+  padding: 12px;
+  border: none;
+  border-radius: 6px;
+}
+
+.div-to-do-entry ul {
+  list-style: none;
+  margin: 4px 0;
+  padding-left: 10px;
 }
 
 #add-modal-content {
@@ -223,24 +268,24 @@ tbody tr td {
   margin-bottom: 10px;
 }
 
-#added-date {
-    height: 30px;
-    margin-top: 5px;
+#added-datetime {
+  height: 30px;
+  margin-top: 5px;
 }
 
 #add-modal-content > form button {
-    width: 100px;
-    margin-top: auto;
-    align-self: center;
-    color: #fff;
-    background-color: #1751D0;
-    border: unset;
-    border-radius: 5px;
-    padding: 7px;
-    cursor: pointer;
+  width: 100px;
+  margin-top: auto;
+  align-self: center;
+  color: #fff;
+  background-color: #1751d0;
+  border: unset;
+  border-radius: 5px;
+  padding: 7px;
+  cursor: pointer;
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
+  margin-top: auto;
+  padding: 16px 0;
 }
