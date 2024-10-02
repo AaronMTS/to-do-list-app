@@ -36,10 +36,11 @@
             </nav>
         </header>
         <main class="fixed-max-width">
-            <form action="#" method="get" id="form-week">
+            <div method="get" id="form-week">
                 <label for="week-selector"><h5>Select a week:</h5></label>
                 <input type="week" name="week-selector" id="week-selector">
-            </form>
+                <button type="submit" id="btn-submit-week"></button>
+            </div>
             <div id="table-container">
                 <table>
                     <thead class="sticky">
@@ -56,10 +57,9 @@
                     <tbody>
                         <tr id="tb-first-row">
                             <td>
-                                <p class="p-day sticky">10</p>
                             </td>
                             <td>
-                                <p class="p-day sticky">11</p>
+                                <!-- <p class="p-day sticky">11</p> -->
                             </td>
                             <td></td>
                             <td></td>
@@ -68,24 +68,46 @@
                             <td></td>
                         </tr>
                         <tr id="tb-second-row">
-                            <td>
-                                <div class="div-to-do-entry">
-                                    <p>reschedule meet up</p>
-                                </div>
+                            <td id="td-monday-contents">
                             </td>
-                            <td>
+                            <td id="td-tuesday-contents">
+                                <!-- <div class="div-to-do-entry">
+                                    <div class="tde-top">
+                                        <h5>7:00pm</h5>
+                                        <button type="button" class="btn-options">
+                                            <img src="/images/more-options.png" alt="More options">
+                                        </button>
+                                        <div id="tuesday-1" class="options-modal">
+                                            <button type="button">Edit</button>
+                                            <button type="button">Delete</button>
+                                        </div>
+                                    </div>
+                                    <ul>
+                                        <li>reschedule meet up</li>
+                                    </ul>
+                                </div> -->
+                            </td>
+                            <td id="td-wednesday-contents">
                                 <div class="div-to-do-entry">
-                                    <h5>7:00pm</h5>
+                                    <div class="tde-top">
+                                        <h5>7:00pm</h5>
+                                        <button type="button" class="btn-options">
+                                            <img src="/images/more-options.png" alt="More options">
+                                        </button>
+                                        <div id="wednesday-1" class="options-modal">
+                                            <button type="button">Edit</button>
+                                            <button type="button">Delete</button>
+                                        </div>
+                                    </div>
                                     <ul>
                                         <li>reschedule meet up</li>
                                     </ul>
                                 </div>
                             </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td id="td-thursday-contents"></td>
+                            <td id="td-friday-contents"></td>
+                            <td id="td-saturday-contents"></td>
+                            <td id="td-sunday-contents"></td>
                         </tr>
                     </tbody>
                 </table>
