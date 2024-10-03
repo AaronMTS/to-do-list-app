@@ -1,23 +1,4 @@
-let db = [
-  {
-    id: 0,
-    addedTodo: ["reschedule meet up"],
-    date: "Sep 30 2024",
-    time: "1:47pm",
-  },
-  {
-    id: 1,
-    addedTodo: ["submit report"],
-    date: "Oct 30 2024",
-    time: "06:45am",
-  },
-  {
-    id: 2,
-    addedTodo: ["submit report, reschedule meet up"],
-    date: "Oct 30 2024",
-    time: "07:45am",
-  },
-];
+let db = [];
 
 document.addEventListener("DOMContentLoaded", () => {
   const addButton = document.querySelector("#btn-add-entry");
@@ -94,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="tde-top">
                     <h5>${element["time"]}</h5>
                     <button type="button" class="btn-options">
-                        <img src="/images/more-options.png" alt="More options">
+                        <img src="images/more-options.png" alt="More options">
                     </button>
                     <div id="${dayOfWeek}-1" class="options-modal">
                         <button type="button" class="btn-edit">Edit</button>
