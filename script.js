@@ -107,9 +107,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     <li>${element["addedTodo"]}</li>
                 </ul>
             `;
-
-        // let topDiv = document.createElement('div');
-        // topDiv.className = "tde-top";
         toDoContainer.children[nthDay - 1].appendChild(wrapper);
         // console.log(toDoContainer.children);
       });
@@ -141,22 +138,26 @@ document.addEventListener("DOMContentLoaded", () => {
     "click",
     () => (addModal.style.display = "none")
   );
-  modalOptionsButton.forEach((element) => {
-    element.addEventListener("click", (Event) => {
-      let currentTarget = Event.srcElement.parentElement.nextElementSibling.id;
-      let optionsModal = document.querySelector(`#${currentTarget}`);
-      let rect = element.parentElement.getBoundingClientRect();
 
-      if (
-        optionsModal.style.display !== "none" &&
-        optionsModal.style.display !== ""
-      ) {
-        optionsModal.style.display = "none";
-      } else {
-        optionsModal.style.display = "grid";
-        optionsModal.style.top = `${rect.height}px`;
-        optionsModal.style.left = `${rect.width - 75}px`;
+  for (let i = 0; i < toDoContainer.childElementCount; i++) {
+    toDoContainer.children[i].addEventListener("click", (event) => {
+      const target = event.target;
+
+      if (target.parentElement.classList.contains("btn-options")) {
+        let optionsModal = target.parentElement.nextElementSibling;
+        let rect = target.parentElement.parentElement.getBoundingClientRect()
+
+        if (
+          optionsModal.style.display !== "none" &&
+          optionsModal.style.display !== ""
+        ) {
+          optionsModal.style.display = "none";
+        } else {
+          optionsModal.style.display = "grid";
+          optionsModal.style.top = `${rect.height}px`;
+          optionsModal.style.left = `${rect.width - 75}px`;
+        }
       }
     });
-  });
+  };
 });
