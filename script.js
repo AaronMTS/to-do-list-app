@@ -1,7 +1,30 @@
+let db = [
+  {
+    id: 0,
+    addedTodo: ["reschedule meet up"],
+    date: "Sep 30 2024",
+    time: "1:47pm",
+  },
+  {
+    id: 1,
+    addedTodo: ["submit report"],
+    date: "Oct 30 2024",
+    time: "06:45am",
+  },
+  {
+    id: 2,
+    addedTodo: ["submit report, reschedule meet up"],
+    date: "Oct 30 2024",
+    time: "07:45am",
+  },
+];
+
 document.addEventListener("DOMContentLoaded", () => {
   const addButton = document.querySelector("#btn-add-entry");
+  const formModal = document.querySelector(".form-modal");
   const addModal = document.querySelector("#add-modal");
-  const closeModalButton = document.querySelector("#btn-close-entry");
+  const editModal = document.querySelector("#edit-modal");
+  const closeModalButton = document.querySelectorAll(".btn-close-entry");
   let modalOptionsButton = document.querySelectorAll(".btn-options");
   const selectedWeek = document.querySelector("#week-selector");
   const today = new Date();
@@ -12,6 +35,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const addForm = document.querySelector("#form-add");
   const toBeAdded = document.querySelector("#added-todo");
   const addedDateAndTime = document.querySelector("#added-datetime");
+  const todoId = document.querySelector("#todo-id");
+  const editForm = document.querySelector("#form-edit");
+  const toBeEdited = document.querySelector("#edited-todo");
+  const editedDateAndTime = document.querySelector("#edited-datetime");
+  let currentEditedTodo;
+  let currentEditedDateAndTime;
 
   const getWeekNumber = (date) => {
     const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
@@ -44,41 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const nextDay = getNextDay(i);
       currentDate = nextDay.toDateString().match(/\w{3}\s\d{2}\s\d{4}/);
       filteredDateArray.push(currentDate[0]);
-      //   filteredDateArray.push([
-      //     currentDate[0],
-      //     currentDate["input"].slice(0, 3),
-      //   ]);
-      // console.log(filteredDateArray);
     }
-
-    fetch(`/db.json`)
-      .then((response) => {
-        // Check if the request was successful
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        // Parse the response as JSON
-        return response.json();
-      })
-      .then((data) => {
-        // Handle the JSON data
-        processData(data, filteredDateArray);
-      })
-      .catch((error) => {
-        // Handle any errors that occurred during the fetch
-        console.error("Fetch error:", error);
-      });
-
-    // Function to process the data
-    const processData = (allData, weekDates) => {
-      // Filter the data based on the week input
-      const filteredData = allData.filter((item) => {
-        return weekDates.includes(item.date);
-      });
-      console.log(filteredData);
-
-      displayData(filteredData);
-    };
 
     const displayData = (data) => {
       for (let i = 0; i < toDoContainer.childElementCount; i++) {
@@ -93,8 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
         nthDay = nthDay.getDay();
 
         let wrapper = document.createElement("div");
+        wrapper.id = element["id"];
         wrapper.className = "div-to-do-entry";
-
         wrapper.innerHTML = `
                 <div class="tde-top">
                     <h5>${element["time"]}</h5>
@@ -102,8 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
                         <img src="/images/more-options.png" alt="More options">
                     </button>
                     <div id="${dayOfWeek}-1" class="options-modal">
-                        <button type="button">Edit</button>
-                        <button type="button">Delete</button>
+                        <button type="button" class="btn-edit">Edit</button>
+                        <button type="button" class="btn-delete">Delete</button>
                     </div>
                 </div>
                 <ul>
@@ -114,6 +109,19 @@ document.addEventListener("DOMContentLoaded", () => {
         // console.log(toDoContainer.children);
       });
     };
+
+    // Function to process the data
+    const processData = (allData, weekDates) => {
+      // Filter the data based on the week input
+      const filteredData = allData.filter((item) => {
+        return weekDates.includes(item.date);
+      });
+      console.log(filteredData);
+
+      displayData(filteredData);
+    };
+
+    processData(db, filteredDateArray);
 
     const [year, week] = selectedWeek.value.split("-W");
     const firstDayOfWeek = new Date(year, 0, (week - 1) * 7 + 1);
@@ -137,10 +145,49 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   addButton.addEventListener("click", () => (addModal.style.display = "grid"));
-  closeModalButton.addEventListener(
-    "click",
-    () => (addModal.style.display = "none")
-  );
+  closeModalButton.forEach(element => {
+    element.addEventListener("click", (event) => {
+      const ancestorElement = event.target.parentElement.parentElement.parentElement;
+      if (ancestorElement.id === "add-modal") {
+        addModal.style.display = 'none';
+      }
+      if (ancestorElement.id === "edit-modal") {
+        editModal.style.display = 'none';
+      }
+    });
+  });
+
+  const formatDateAndTime = (date, time) => {
+    const months = {
+      Jan: '01',
+      Feb: '02',
+      Mar: '03',
+      Apr: '04',
+      May: '05',
+      Jun: '06',
+      Jul: '07',
+      Aug: '08',
+      Sep: '09',
+      Oct: '10',
+      Nov: '11',
+      Dec: '12'
+    };
+    let [month, day, year]= date.split(" ");
+    month = months[month];
+    
+    let [hours, minutes] = time.split(":");
+
+    if (new RegExp("pm").test(minutes)) {
+      hours = parseInt(hours, 10) + 12;
+      // newTime = time.join(":").substring(0, time.indexOf("pm"));
+    }
+
+    if (hours.length < 2) {
+      hours = `0${hours}`;
+    }
+
+    return `${year}-${month}-${day}T${hours}:${minutes.substring(0, 2)}`;
+  };
 
   for (let i = 0; i < toDoContainer.childElementCount; i++) {
     toDoContainer.children[i].addEventListener("click", (event) => {
@@ -160,7 +207,29 @@ document.addEventListener("DOMContentLoaded", () => {
           optionsModal.style.top = `${rect.height}px`;
           optionsModal.style.left = `${rect.width - 75}px`;
         }
+
+        for (let i = 0; i < optionsModal.childElementCount; i++) {
+          optionsModal.children[i].addEventListener("click", (event) => {
+            const rootDiv = event.target.parentElement.parentElement.parentElement;
+            const fullDate = db[rootDiv.id]["date"];
+            const fullTime = db[rootDiv.id]["time"];
+            if(event.target.classList.contains("btn-delete")) {
+              db.splice(rootDiv.id, 1)
+              rootDiv.remove();
+            }
+            if(event.target.classList.contains("btn-edit")) {
+              currentEditedTodo = event.target.parentElement.parentElement.nextElementSibling.children[0].innerText
+              currentEditedDateAndTime = formatDateAndTime(fullDate, fullTime);
+
+              editModal.style.display = 'grid';
+              todoId.value = rootDiv.id;
+              toBeEdited.value = currentEditedTodo;
+              editedDateAndTime.value = currentEditedDateAndTime;
+            }
+          })
+        }
       }
+      // console.log(toDoContainer.children[i])
     });
   }
 
@@ -192,50 +261,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
-  async function readFile(filename) {
-    try {
-      const response = await fetch(filename);
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
-      const text = await response.text();
-      return text;
-    } catch (error) {
-      console.error("Error reading file:", error);
-      return null;
-    }
-  }
-
-  async function writeFile(filename, data) {
-    try {
-      const response = await fetch(filename, {
-        method: "PUT",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok)
-        throw new Error(`HTTP error! status: ${response.status}`);
-      return true;
-    } catch (error) {
-      console.error("Error writing file:", error);
-      return false;
-    }
-  }
-
-  function parseJSON(jsonString) {
-    try {
-      return JSON.parse(jsonString);
-    } catch (error) {
-      console.error("Error parsing JSON:", error);
-      return null;
-    }
-  }
-
-  addForm.addEventListener("submit", async (event) => {
+  addForm.addEventListener("submit", (event) => {
     event.preventDefault();
-
-    const filename = "db.json";
     let addedDate = changeDateFormat(addedDateAndTime.value.split("T")[0]);
     let addedTime = changeTimeFormat(addedDateAndTime.value.split("T")[1]);
 
@@ -245,38 +272,31 @@ document.addEventListener("DOMContentLoaded", () => {
     formData.append("time", addedTime);
 
     let newTodo = {
+      id: db.length,
       addedTodo: [`${toBeAdded.value}`],
       date: addedDate,
       time: addedTime,
     };
 
-    let fileContents = await readFile(filename);
-    if (!fileContents) {
-      console.log("No existing data found. Creating new array.");
-      fileContents = "[{}]";
-    }
+    db.push(newTodo);
 
-    const data = parseJSON(fileContents);
-    if (!data) {
-      console.log("Failed to parse JSON data.");
-      return;
-    }
-
-    // Add the new item to the existing data
-    data.push(newTodo);
-
-    // Convert the data back to a JSON string
-    const updatedData = JSON.stringify(data);
-
-    console.log(updatedData)
-
-    // Write the updated data back to the file
-    const success = await writeFile(filename, updatedData);
-
-    if (success) {
-      console.log("Data added successfully!");
-    } else {
-      console.error("Failed to add data to file.");
-    }
+    toBeAdded.value = '';
+    addedDateAndTime.value = '';
+    addModal.style.display = 'none';
   });
+
+  editForm.addEventListener("submit", event => {
+    event.preventDefault();
+
+    if (toBeEdited.value === currentEditedTodo && editedDateAndTime.value === currentEditedDateAndTime) {
+      alert('No changes entered.')
+    }
+    else {
+      db[event.target[0].value]["addedTodo"] = toBeEdited.value;
+      db[event.target[0].value]["date"] = changeDateFormat(editedDateAndTime.value.split("T")[0]);
+      db[event.target[0].value]["time"] = changeTimeFormat(editedDateAndTime.value.split("T")[1]);
+
+      editModal.style.display = 'none';
+    }
+  })
 });

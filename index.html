@@ -9,7 +9,7 @@
     <body>
         <header class="sticky">
             <nav class="top-navbar fixed-max-width">
-                <form action="#" method="get" id="form-search">
+                <!-- <form action="#" method="get" id="form-search">
                     <input type="search" name="search" id="search"
                         placeholder="Search">
                     <button type="submit" id="btn-search"><svg fill="#c0e1fa"
@@ -19,7 +19,7 @@
                                 d="M12.027 9.92L16 13.95 14 16l-4.075-3.976A6.465 6.465 0 0 1 6.5 13C2.91 13 0 10.083 0 6.5 0 2.91 2.917 0 6.5 0 10.09 0 13 2.917 13 6.5a6.463 6.463 0 0 1-.973 3.42zM1.997 6.452c0 2.48 2.014 4.5 4.5 4.5 2.48 0 4.5-2.015 4.5-4.5 0-2.48-2.015-4.5-4.5-4.5-2.48 0-4.5 2.014-4.5 4.5z"
                                 fill-rule="evenodd" />
                         </svg></button>
-                </form>
+                </form> -->
                 <button type="button" id="btn-add-entry" class="clickable"><svg
                         viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg"><g id="Complete"><g
@@ -113,26 +113,31 @@
                 </table>
             </div>
         </main>
-        <div id="add-modal" class="modal">
-            <div id="add-modal-content">
-                <div id="top-div">
+        <div id="add-modal" class="modal form-modal">
+            <div class="form-modal-content">
+                <div class="top-div">
                     <h2>Enter Details</h2>
-                    <button type="button" id="btn-close-entry"><svg
-                            viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <g id="Menu / Close_SM">
-                                <path id="Vector"
-                                    d="M16 16L12 12M12 12L8 8M12 12L16 8M12 12L8 16"
-                                    stroke="#7C7A81" stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round" />
-                            </g>
-                        </svg></button>
+                    <button type="button" class="btn-close-entry"></button>
                 </div>
                 <form action="#" id="form-add">
                     <textarea name="added-todo" id="added-todo" required></textarea>
                     <label for="added-datetime">Date and Time:</label>
                     <input type="datetime-local" name="added-datetime" id="added-datetime" required>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        <div id="edit-modal" class="modal form-modal" style="display: none;">
+            <div class="form-modal-content">
+                <div class="top-div">
+                    <h2>Edit Details</h2>
+                    <button type="button" class="btn-close-entry"></button>
+                </div>
+                <form action="#" id="form-edit">
+                    <input type="hidden" name="hidden" id="todo-id">
+                    <textarea name="edited-todo" id="edited-todo" required></textarea>
+                    <label for="edited-datetime">Date and Time:</label>
+                    <input type="datetime-local" name="edited-datetime" id="edited-datetime" required>
                     <button type="submit">Submit</button>
                 </form>
             </div>
