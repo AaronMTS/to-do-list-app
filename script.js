@@ -9,6 +9,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitWeek = document.querySelector("#btn-submit-week");
   const dayContainer = document.querySelector("#tb-first-row");
   const toDoContainer = document.querySelector("#tb-second-row");
+  const addForm = document.querySelector("#form-add");
+  const toBeAdded = document.querySelector("#added-todo");
+  const addedDateAndTime = document.querySelector("#added-datetime");
 
   const getWeekNumber = (date) => {
     const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
@@ -145,7 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (target.parentElement.classList.contains("btn-options")) {
         let optionsModal = target.parentElement.nextElementSibling;
-        let rect = target.parentElement.parentElement.getBoundingClientRect()
+        let rect = target.parentElement.parentElement.getBoundingClientRect();
 
         if (
           optionsModal.style.display !== "none" &&
@@ -159,5 +162,121 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
+  }
+
+  const changeDateFormat = (dateString) => {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const [year, month, day] = dateString.split("-");
+    return `${months[month - 1]} ${day} ${year}`;
   };
+
+  const changeTimeFormat = (timeString) => {
+    const [hour, min] = timeString.split(":");
+    if (hour > 12) {
+      return `${hour - 12}:${min}pm`;
+    } else {
+      return `${timeString}am`;
+    }
+  };
+
+  async function readFile(filename) {
+    try {
+      const response = await fetch(filename);
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
+      const text = await response.text();
+      return text;
+    } catch (error) {
+      console.error("Error reading file:", error);
+      return null;
+    }
+  }
+
+  async function writeFile(filename, data) {
+    try {
+      const response = await fetch(filename, {
+        method: "PUT",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!response.ok)
+        throw new Error(`HTTP error! status: ${response.status}`);
+      return true;
+    } catch (error) {
+      console.error("Error writing file:", error);
+      return false;
+    }
+  }
+
+  function parseJSON(jsonString) {
+    try {
+      return JSON.parse(jsonString);
+    } catch (error) {
+      console.error("Error parsing JSON:", error);
+      return null;
+    }
+  }
+
+  addForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const filename = "db.json";
+    let addedDate = changeDateFormat(addedDateAndTime.value.split("T")[0]);
+    let addedTime = changeTimeFormat(addedDateAndTime.value.split("T")[1]);
+
+    let formData = new FormData();
+    formData.append("addedTodo", toBeAdded.value);
+    formData.append("date", addedDate);
+    formData.append("time", addedTime);
+
+    let newTodo = {
+      addedTodo: [`${toBeAdded.value}`],
+      date: addedDate,
+      time: addedTime,
+    };
+
+    let fileContents = await readFile(filename);
+    if (!fileContents) {
+      console.log("No existing data found. Creating new array.");
+      fileContents = "[{}]";
+    }
+
+    const data = parseJSON(fileContents);
+    if (!data) {
+      console.log("Failed to parse JSON data.");
+      return;
+    }
+
+    // Add the new item to the existing data
+    data.push(newTodo);
+
+    // Convert the data back to a JSON string
+    const updatedData = JSON.stringify(data);
+
+    console.log(updatedData)
+
+    // Write the updated data back to the file
+    const success = await writeFile(filename, updatedData);
+
+    if (success) {
+      console.log("Data added successfully!");
+    } else {
+      console.error("Failed to add data to file.");
+    }
+  });
 });
