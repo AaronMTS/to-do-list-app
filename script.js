@@ -192,13 +192,14 @@ document.addEventListener("DOMContentLoaded", () => {
         for (let i = 0; i < optionsModal.childElementCount; i++) {
           optionsModal.children[i].addEventListener("click", (event) => {
             const rootDiv = event.target.parentElement.parentElement.parentElement;
-            const fullDate = db[rootDiv.id]["date"];
-            const fullTime = db[rootDiv.id]["time"];
             if(event.target.classList.contains("btn-delete")) {
               db.splice(rootDiv.id, 1)
               rootDiv.remove();
             }
             if(event.target.classList.contains("btn-edit")) {
+              const fullDate = db[rootDiv.id]["date"];
+              const fullTime = db[rootDiv.id]["time"];
+
               currentEditedTodo = event.target.parentElement.parentElement.nextElementSibling.children[0].innerText
               currentEditedDateAndTime = formatDateAndTime(fullDate, fullTime);
 
